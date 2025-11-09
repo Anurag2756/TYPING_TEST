@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typing Speed & Accuracy Test</title>
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(120deg, #89f7fe, #66a6ff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 850px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    #paragraph {
+        background: #f2f2f2;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 17px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #222;
+    }
+
+    textarea {
+        width: 100%;
+        height: 130px;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        resize: none;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
+
+    #timer {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #007bff;
+    }
+
+    .progress-bar {
+        width: 100%;
+        background: #e0e0e0;
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .progress {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        transition: width 1s linear;
+    }
+
+    .buttons {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 22px;
+        margin: 8px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    #result {
+        display: none;
+        margin-top: 20px;
+        background: #f7f7f7;
+        padding: 20px;
+        border-radius: 10px;
+        line-height: 1.6;
+    }
+
+    #result strong {
+        color: #333;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Typing Speed, Accuracy & WPM Test</h2>
+    <p id="timer">Time Left: 60s</p>
+    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+
+    <p id="paragraph"></p>
+
+    <textarea id="input" placeholder="Click Start to begin typing..." disabled></textarea>
+
+    <div class="buttons">
+        <button onclick="startTest()">Start / Restart</button>
+        <button onclick="nextParagraph()">Next Paragraph</button>
+        <button onclick="showResult()">Show Result</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script>
+const paragraphs = [
+    "Artificial Intelligence allows machines to mimic human behavior and learn from experience.",
+    "Web development involves both front-end and back-end technologies to create dynamic websites.",
+    "Cloud computing enables users to store and access data remotely over the Internet.",
+    "Data Science combines statistics, programming, and domain expertise to analyze information.",
+    "Cybersecurity protects computer systems and networks from digital attacks and unauthorized access.",
+    "Internet of Things connects everyday objects to the internet, enabling smarter communication.",
+    "Machine learning helps computers improve their performance automatically using training data.",
+    "Responsive design ensures web pages look great on all devices and screen sizes.",
+  "The quick brown fox jumps over the lazy dog.",
+  "JavaScript makes websites interactive and dynamic.",
+  "Practice improves typing speed and accuracy.",
+  "Coding is fun when logic becomes your language.",
+
+  "Learning to code is like learning to speak a new language — at first it’s confusing, but soon you start thinking in it. Once logic becomes part of your thought process, solving problems feels like solving puzzles every day.",
+  
+  "Technology changes fast, and so should your mindset. The more you experiment with code, the better you understand how creativity and logic come together to build something meaningful for the digital world.",
+  
+  "Success in programming doesn’t come from reading tutorials alone. It comes from endless hours of debugging, testing, and fixing what didn’t work before. Every error message is just a hint towards a better solution.",
+  
+  "Typing faster isn’t just about speed — it’s about rhythm and focus. As your fingers flow across the keyboard, your thoughts start syncing with your hands, turning ideas into code effortlessly.",
+  
+  "A website is more than just text and images. It’s a digital story where design, code, and creativity meet. Every click, hover, and scroll reveals something new about your imagination.",
+  
+  "When you write code, you’re not just telling a computer what to do — you’re teaching it to think step by step. That’s what makes programming both logical and magical.",
+  
+  "Every programmer starts with confusion and frustration, but that’s how learning works. The more errors you fix, the more confident you become. Every small victory builds your foundation for the big ones.",
+  
+  "Web development is the art of blending creativity with precision. A single line of CSS can transform a dull layout into a stunning visual masterpiece that captures attention instantly.",
+  
+  "Debugging might seem boring, but it’s actually detective work for developers. You trace clues, follow logic, and discover where something went wrong. Solving bugs gives you a sense of real accomplishment.",
+  
+  "The future belongs to those who can adapt to change. In technology, every new skill you learn adds a new superpower to your professional journey.",
+  
+  "Sometimes your code doesn’t work not because it’s wrong, but because it’s teaching you patience and problem-solving. Every ‘error’ is an opportunity to grow.",
+  
+  "Artificial Intelligence and Machine Learning are transforming the world. From self-driving cars to chatbots, it’s all about teaching machines to think, learn, and make smart decisions on their own.",
+  
+  "A great developer is not one who knows everything, but one who knows how to find the right solution efficiently. Curiosity and persistence are your best teachers in coding.",
+  
+  "Creativity in tech isn’t about colors or fonts — it’s about finding new ways to solve old problems. Every innovative app started with someone asking, ‘What if we tried this instead?’",
+  
+  "Collaboration is the heart of great development. Coding together, reviewing each other’s work, and brainstorming solutions lead to better results than working in isolation.",
+  
+  "User experience design is not just about looks; it’s about how people feel while using your creation. The best designs are invisible — they just work naturally.",
+  
+  "Continuous learning keeps you ahead in tech. Read, experiment, and fail often. The only real failure is not trying at all.",
+  
+  "Every successful coder was once a beginner who didn’t quit. Keep typing, keep testing, and keep improving — because the best projects start with persistence and passion."
+
+
+];
+
+let currentPara = "";
+let correctWords = 0, wrongWords = 0, backspaceCount = 0, totalWords = 0;
+let timer = 60, interval = null, typingStarted = false;
+
+function nextParagraph() {
+    const randomIndex = Math.floor(Math.random() * paragraphs.length);
+    currentPara = paragraphs[randomIndex];
+    document.getElementById("paragraph").textContent = currentPara;
+    document.getElementById("input").value = "";
+    document.getElementById("result").style.display = "none";
+    document.getElementById("input").disabled = true;
+    resetTest();
+}
+
+function startTest() {
+    nextParagraph();
+    document.getElementById("input").disabled = false;
+    document.getElementById("input").focus();
+    typingStarted = false;
+    timer = 60;
+    document.getElementById("timer").textContent = `Time Left: ${timer}s`;
+    document.getElementById("progress").style.width = "100%";
+}
+
+document.getElementById("input").addEventListener("input", function(event) {
+    if (!typingStarted && this.value.length === 1) {
+        typingStarted = true;
+        startTimer();
+    }
+
+    if (event.inputType === "deleteContentBackward") backspaceCount++;
+
+    const inputWords = this.value.trim().split(/\s+/);
+    const paraWords = currentPara.trim().split(/\s+/);
+
+    correctWords = 0;
+    wrongWords = 0;
+
+    inputWords.forEach((word, index) => {
+        if (word === paraWords[index]) correctWords++;
+        else wrongWords++;
+    });
+});
+
+function startTimer() {
+    clearInterval(interval);
+    interval = setInterval(() => {
+        timer--;
+        document.getElementById("timer").textContent = `Time Left: ${timer}s`;
+        document.getElementById("progress").style.width = `${(timer / 60) * 100}%`;
+
+        if (timer <= 0) {
+            clearInterval(interval);
+            document.getElementById("input").disabled = true;
+        }
+    }, 1000);
+}
+
+function resetTest() {
+    clearInterval(interval);
+    document.getElementById("progress").style.width = "100%";
+    timer = 60;
+    typingStarted = false;
+}
+
+function showResult() {
+    clearInterval(interval);
+    const inputText = document.getElementById("input").value.trim();
+    if (!inputText) {
+        alert("Please type something first!");
+        return;
+    }
+
+    totalWords = inputText.split(/\s+/).length;
+    const accuracy = ((correctWords / totalWords) * 100).toFixed(2);
+    const timeTaken = 60 - timer;
+    const minutes = timeTaken / 60;
+    const wpm = minutes > 0 ? Math.round(correctWords / minutes) : correctWords;
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+    resultDiv.innerHTML = `
+        <h3>Result Summary</h3>
+        <p><strong>Total Words Typed:</strong> ${totalWords}</p>
+        <p><strong>Correct Words:</strong> ${correctWords}</p>
+        <p><strong>Wrong Words:</strong> ${wrongWords}</p>
+        <p><strong>Backspaces Used:</strong> ${backspaceCount}</p>
+        <p><strong>Accuracy:</strong> ${accuracy}%</p>
+        <p><strong>Typing Speed (WPM):</strong> ${wpm}</p>
+    `;
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+
+</body>
+</html>
