@@ -1,145 +1,315 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link rel="manifest" href="manifest.json">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Typing Speed & Accuracy Test</title>
-<style>
-    body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(120deg, #89f7fe, #66a6ff);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🖋️ Typing Speed & Accuracy Test</title>
 
-    .container {
-        width: 90%;
-        max-width: 850px;
-        background: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
-    }
+  <!-- Google font for Hindi support -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    h2 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 15px;
-    }
+  <style>
+    :root {
+  --bg1: #0f172a;
+  --bg2: #1e293b;
+  --accent: #6366f1;
+  --accent-2: #06b6d4;
+  --card: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.12);
+  --muted: #cbd5e1;
+  --radius: 16px;
+}
 
-    #paragraph {
-        background: #f2f2f2;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 17px;
-        margin-bottom: 20px;
-        line-height: 1.6;
-        color: #222;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    textarea {
-        width: 100%;
-        height: 130px;
-        font-size: 16px;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        resize: none;
-        outline: none;
-        transition: all 0.2s ease;
-    }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at 20% 30%, #0f172a 0%, #1e293b 100%);
+  color: #f8fafc;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
 
-    textarea:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-    }
+.wrap {
+  max-width: 950px;
+  margin: 40px auto;
+  padding: 24px;
+}
 
-    #timer {
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 8px;
-        color: #007bff;
-    }
+header.appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
 
-    .progress-bar {
-        width: 100%;
-        background: #e0e0e0;
-        height: 10px;
-        border-radius: 5px;
-        overflow: hidden;
-        margin-bottom: 15px;
-    }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-    .progress {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, #00c6ff, #0072ff);
-        transition: width 1s linear;
-    }
+.app-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 26px;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.3);
+  transition: transform 0.3s ease;
+}
+.app-icon:hover {
+  transform: rotate(10deg) scale(1.1);
+}
 
-    .buttons {
-        text-align: center;
-        margin-top: 15px;
-    }
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
 
-    button {
-        background: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 22px;
-        margin: 8px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-    }
+.controls-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--glass);
+  padding: 6px 10px;
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+}
 
-    button:hover {
-        background: #0056b3;
-    }
+.lang-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #1e293b;
+  color: #f8fafc;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.lang-select:hover {
+  background: #334155;
+}
 
-    #result {
-        display: none;
-        margin-top: 20px;
-        background: #f7f7f7;
-        padding: 20px;
-        border-radius: 10px;
-        line-height: 1.6;
-    }
+main.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 22px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+main.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 45px rgba(99, 102, 241, 0.3);
+}
 
-    #result strong {
-        color: #333;
-    }
-</style>
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+#timer {
+  font-weight: 700;
+  color: var(--accent-2);
+  font-size: 18px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #334155;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  width: 100%;
+  transition: width 1s linear;
+}
+
+#paragraph {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  border-radius: 12px;
+  line-height: 1.8;
+  font-size: 17px;
+  color: #e2e8f0;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+#paragraph:hover {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+}
+#paragraph[lang="hi"] {
+  font-family: 'Noto Sans Devanagari', serif;
+  font-size: 18px;
+}
+
+textarea#input {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.6);
+  color: #f8fafc;
+  padding: 12px;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  font-family: Inter, serif;
+  transition: border 0.3s;
+}
+textarea#input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+button {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+}
+button.secondary {
+  background: #1e293b;
+  color: var(--accent-2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result {
+  display: none;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  animation: fadeIn 0.8s ease;
+}
+.result h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--accent-2);
+}
+
+footer {
+  margin-top: 25px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .app-icon { width: 50px; height: 50px; font-size: 20px; }
+  .brand .subtitle { display: none; }
+  .meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .wrap { padding: 16px; }
+  textarea#input { height: 120px; }
+}
+
+/* Typing highlights */
+#paragraph span.correct { color: #4ade80; font-weight: 500; }
+#paragraph span.wrong { color: #f87171; text-decoration: underline wavy red; }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <header class="appbar">
+      <div class="brand">
+        <div class="app-icon" aria-hidden="true">⌨️</div>
+        <div>
+          <div class="title">🖋️ Typing Speed & Accuracy Test</div>
+          <div class="subtitle">Practice typing — English & हिन्दी (Hindi)</div>
+        </div>
+      </div>
 
-<div class="container">
-    <h2>Typing Speed, Accuracy & WPM Test</h2>
-    <p id="timer">Time Left: 60s</p>
-    <div class="progress-bar"><div id="progress" class="progress"></div></div>
+      <div class="controls-top">
+        <label for="language" style="font-size:14px;color:var(--muted);margin-right:6px">Language</label>
+        <select id="language" class="lang-select" aria-label="Select language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
+    </header>
 
-    <p id="paragraph"></p>
+    <main class="card" role="main">
+      <div class="meta">
+        <div>
+          <div id="timer">Time Left: 60s</div>
+          <div class="progress-bar"><div id="progress" class="progress"></div></div>
+        </div>
 
-    <textarea id="input" placeholder="Click Start to begin typing..." disabled></textarea>
+        <div style="text-align:right;color:var(--muted)">
+          <div id="status">Backspaces: 0</div>
+          <div style="font-size:13px" id="wordsInfo">Words: 0</div>
+        </div>
+      </div>
 
-    <div class="buttons">
-        <button onclick="startTest()">Start / Restart</button>
-        <button onclick="nextParagraph()">Next Paragraph</button>
-        <button onclick="showResult()">Show Result</button>
-    </div>
+      <div id="paragraph" lang="en">Click <strong>Start / Restart</strong> to begin. Choose language and practice paragraphs appear here.</div>
 
-    <div id="result"></div>
-</div>
+      <textarea id="input" placeholder="Click Start to begin typing..." disabled aria-label="Typing input area"></textarea>
+
+      <div class="buttons">
+        <button id="startBtn">Start / Restart</button>
+        <button id="nextBtn" class="secondary">Next Paragraph</button>
+        <button id="showBtn" class="secondary">Show Result</button>
+      </div>
+
+      <div id="result" class="result" aria-live="polite"></div>
+    </main>
+
+    <footer>© 2025 Anurag Tripathi. All Rights Reserved.</footer>
+  </div>
 
 <script>
-const paragraphs = [
-    "Artificial Intelligence allows machines to mimic human behavior and learn from experience.",
+/* ---------- Data: English + 30 Hindi paragraphs ---------- */
+const englishSamples = [
+  "Artificial Intelligence allows machines to mimic human behavior and learn from experience.",
     "Web development involves both front-end and back-end technologies to create dynamic websites.",
     "Cloud computing enables users to store and access data remotely over the Internet.",
     "Data Science combines statistics, programming, and domain expertise to analyze information.",
@@ -191,105 +361,234 @@ const paragraphs = [
 
 ];
 
-let currentPara = "";
-let correctWords = 0, wrongWords = 0, backspaceCount = 0, totalWords = 0;
-let timer = 60, interval = null, typingStarted = false;
+const hindiSamples = [
+  "टाइपिंग स्पीड बढ़ाने के लिए प्रतिदिन अभ्यास आवश्यक है।",
+  "तकनीक ने दुनिया को एक दूसरे के और करीब ला दिया है।",
+  "प्रोग्रामिंग समस्या सुलझाने की कला है।",
+  "शिक्षा के माध्यम से समाज में सकारात्मक परिवर्तन लाया जा सकता है।",
+  "सुरक्षित रहना और डेटा सुरक्षा का ध्यान रखना आवश्यक है।",
+  "कठिन परिश्रम व धैर्य से सफलता मिलती है।",
+  "नियमित अभ्यास से आपकी कुशलता में वृद्धि होगी।",
+  "कंप्यूटर विज्ञान आधुनिक दुनिया का एक अहम हिस्सा है।",
+  "डिजिटल कौशल भविष्य में बहुत महत्वपूर्ण होंगे।",
+  "सही तरीके से सीखने पर परिणाम जल्दी दिखते हैं।",
+  "हिंदी में टाइपिंग का अभ्यास भी उतना ही उपयोगी है।",
+  "छात्रों को परियोजनाओं पर काम करने का अवसर मिलना चाहिए।",
+  "कई छोटे कदमों से बड़ा लक्ष्य हासिल होता है।",
+  "रोज़मर्रा की दिनचर्या में तकनीक का समावेश लाभकारी है।",
+  "विचारों को कोड के रूप में व्यक्त करना सीखें।",
+  "डेटा का विश्लेषण निर्णय लेने में मदद करता है।",
+  "रचनात्मकता और तर्क दोनों जरूरी हैं।",
+  "सॉफ्टवेयर विकास एक टीम प्रयास है।",
+  "समस्या की जड़ तक पहुंचना महत्वपूर्ण है।",
+  "विनम्रता और निरंतरता सफलता की कुंजी हैं।",
+  "प्रयोग और अनुभव से ही सच्ची समझ मिलती है।",
+  "कठोर मेहनत का कोई विकल्प नहीं है।",
+  "आधुनिक उपकरणों का उपयोग बुद्धिमानी से करें।",
+  "नए विचारों को आज़माने से डरना नहीं चाहिए।",
+  "टेक्नोलॉजी का सही इस्तेमाल समाज को सुधारता है।",
+  "समय का प्रबंधन कर प्रत्येक दिन बेहतर बनाएं।",
+  "सहयोग और संवाद से टीम मजबूत बनती है।",
+  "सहज भाषा में विचार व्यक्त करने की क्षमता जरूरी है।",
+  "छोटे लक्ष्य पूरे करने से आत्मविश्वास बढ़ता है।",
+  "निरंतर अभ्यास ही महानता की नींव है।"
+];
 
-function nextParagraph() {
-    const randomIndex = Math.floor(Math.random() * paragraphs.length);
-    currentPara = paragraphs[randomIndex];
-    document.getElementById("paragraph").textContent = currentPara;
-    document.getElementById("input").value = "";
-    document.getElementById("result").style.display = "none";
-    document.getElementById("input").disabled = true;
-    resetTest();
+/* ---------- State ---------- */
+let lang = 'en';
+let currentText = '';
+let timer = 60;
+let intervalId = null;
+let typingStarted = false;
+let backspaceCount = 0;
+let correctWords = 0, wrongWords = 0, totalWords = 0;
+
+/* ---------- Elements ---------- */
+const languageEl = document.getElementById('language');
+const paragraphEl = document.getElementById('paragraph');
+const inputEl = document.getElementById('input');
+const timerEl = document.getElementById('timer');
+const progressEl = document.getElementById('progress');
+const startBtn = document.getElementById('startBtn');
+const nextBtn = document.getElementById('nextBtn');
+const showBtn = document.getElementById('showBtn');
+const resultEl = document.getElementById('result');
+const statusEl = document.getElementById('status');
+const wordsInfoEl = document.getElementById('wordsInfo');
+
+/* ---------- Helpers ---------- */
+function chooseRandomSample() {
+  if (lang === 'hi') {
+    return hindiSamples[Math.floor(Math.random() * hindiSamples.length)];
+  } else {
+    return englishSamples[Math.floor(Math.random() * englishSamples.length)];
+  }
 }
 
-function startTest() {
-    nextParagraph();
-    document.getElementById("input").disabled = false;
-    document.getElementById("input").focus();
-    typingStarted = false;
-    timer = 60;
-    document.getElementById("timer").textContent = `Time Left: ${timer}s`;
-    document.getElementById("progress").style.width = "100%";
+function resetCounters() {
+  timer = 60;
+  clearInterval(intervalId);
+  typingStarted = false;
+  backspaceCount = 0;
+  correctWords = 0;
+  wrongWords = 0;
+  totalWords = 0;
+  timerEl.textContent = `Time Left: ${timer}s`;
+  progressEl.style.width = '100%';
+  statusEl.textContent = `Backspaces: ${backspaceCount}`;
+  wordsInfoEl.textContent = `Words: ${totalWords}`;
+  resultEl.style.display = 'none';
 }
 
-document.getElementById("input").addEventListener("input", function(event) {
-    if (!typingStarted && this.value.length === 1) {
-        typingStarted = true;
-        startTimer();
-    }
-
-    if (event.inputType === "deleteContentBackward") backspaceCount++;
-
-    const inputWords = this.value.trim().split(/\s+/);
-    const paraWords = currentPara.trim().split(/\s+/);
-
-    correctWords = 0;
-    wrongWords = 0;
-
-    inputWords.forEach((word, index) => {
-        if (word === paraWords[index]) correctWords++;
-        else wrongWords++;
-    });
+/* ---------- Language switch ---------- */
+languageEl.addEventListener('change', (e) => {
+  lang = e.target.value;
+  loadNewParagraph();
 });
 
+/* ---------- Load / Next paragraph ---------- */
+function loadNewParagraph() {
+  currentText = chooseRandomSample();
+  paragraphEl.lang = (lang === 'hi') ? 'hi' : 'en';
+  paragraphEl.innerHTML = escapeHtml(currentText);
+  inputEl.value = '';
+  inputEl.disabled = true;
+  resetCounters();
+}
+
+/* ---------- Start / Restart ---------- */
+startBtn.addEventListener('click', () => {
+  loadNewParagraph();
+  inputEl.disabled = false;
+  inputEl.focus();
+  resetCounters();
+  startTimerWhenTyping();
+});
+
+/* ---------- Next paragraph ---------- */
+nextBtn.addEventListener('click', () => {
+  loadNewParagraph();
+  inputEl.disabled = false;
+  inputEl.focus();
+});
+
+/* ---------- Show Result (only when clicked) ---------- */
+showBtn.addEventListener('click', () => {
+  // if nothing typed, warn
+  const text = inputEl.value.trim();
+  if (!text) {
+    alert((lang === 'hi') ? 'कृपया पहले कुछ टाइप करें।' : 'Please type something first!');
+    return;
+  }
+  computeAndShowResult();
+});
+
+/* ---------- Input events: track typing, backspace, words ---------- */
+inputEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Backspace') backspaceCount++;
+});
+
+inputEl.addEventListener('input', (e) => {
+  if (!typingStarted && inputEl.value.length === 1) {
+    typingStarted = true;
+    startTimer();
+  }
+  computeLiveCounts();
+});
+
+/* ---------- Timer ---------- */
 function startTimer() {
-    clearInterval(interval);
-    interval = setInterval(() => {
-        timer--;
-        document.getElementById("timer").textContent = `Time Left: ${timer}s`;
-        document.getElementById("progress").style.width = `${(timer / 60) * 100}%`;
-
-        if (timer <= 0) {
-            clearInterval(interval);
-            document.getElementById("input").disabled = true;
-        }
-    }, 1000);
-}
-
-function resetTest() {
-    clearInterval(interval);
-    document.getElementById("progress").style.width = "100%";
-    timer = 60;
-    typingStarted = false;
-}
-
-function showResult() {
-    clearInterval(interval);
-    const inputText = document.getElementById("input").value.trim();
-    if (!inputText) {
-        alert("Please type something first!");
-        return;
+  clearInterval(intervalId);
+  intervalId = setInterval(() => {
+    timer--;
+    timerEl.textContent = `Time Left: ${timer}s`;
+    progressEl.style.width = `${(timer / 60) * 100}%`;
+    if (timer <= 0) {
+      clearInterval(intervalId);
+      inputEl.disabled = true;
     }
-
-    totalWords = inputText.split(/\s+/).length;
-    const accuracy = ((correctWords / totalWords) * 100).toFixed(2);
-    const timeTaken = 60 - timer;
-    const minutes = timeTaken / 60;
-    const wpm = minutes > 0 ? Math.round(correctWords / minutes) : correctWords;
-
-    const resultDiv = document.getElementById("result");
-    resultDiv.style.display = "block";
-    resultDiv.innerHTML = `
-        <h3>Result Summary</h3>
-        <p><strong>Total Words Typed:</strong> ${totalWords}</p>
-        <p><strong>Correct Words:</strong> ${correctWords}</p>
-        <p><strong>Wrong Words:</strong> ${wrongWords}</p>
-        <p><strong>Backspaces Used:</strong> ${backspaceCount}</p>
-        <p><strong>Accuracy:</strong> ${accuracy}%</p>
-        <p><strong>Typing Speed (WPM):</strong> ${wpm}</p>
-    `;
+  }, 1000);
 }
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+
+/* Start timer only when typing starts (for better UX) */
+function startTimerWhenTyping() {
+  // if user starts typing, input listener will start timer
 }
+
+/* ---------- Compute correct/wrong words live ---------- */
+function computeLiveCounts() {
+  const typed = inputEl.value.trim();
+  if (!typed) {
+    correctWords = wrongWords = totalWords = 0;
+    statusEl.textContent = `Backspaces: ${backspaceCount}`;
+    wordsInfoEl.textContent = `Words: ${totalWords}`;
+    return;
+  }
+  const typedWords = typed.split(/\s+/);
+  const targetWords = currentText.trim().split(/\s+/);
+  correctWords = 0; wrongWords = 0;
+  typedWords.forEach((w, i) => {
+    if (targetWords[i] && w === targetWords[i]) correctWords++;
+    else wrongWords++;
+  });
+  totalWords = typedWords.length;
+  statusEl.textContent = `Backspaces: ${backspaceCount}`;
+  wordsInfoEl.textContent = `Words: ${totalWords}`;
+}
+
+/* ---------- Compute and show final result ---------- */
+function computeAndShowResult() {
+  const typed = inputEl.value.trim();
+  const typedWords = typed ? typed.split(/\s+/) : [];
+  const targetWords = currentText.trim().split(/\s+/);
+
+  // word counts
+  totalWords = typedWords.length;
+  correctWords = 0; wrongWords = 0;
+  for (let i = 0; i < typedWords.length; i++) {
+    if (targetWords[i] && typedWords[i] === targetWords[i]) correctWords++;
+    else wrongWords++;
+  }
+
+  // accuracy: by characters match
+  let charCorrect = 0;
+  const typedChars = typed;
+  for (let i = 0; i < typedChars.length; i++) {
+    if (currentText[i] && typedChars[i] === currentText[i]) charCorrect++;
+  }
+  const accuracy = totalWords > 0 ? ((charCorrect / currentText.length) * 100).toFixed(2) : 0;
+
+  // WPM: correctWords per minute based on elapsed time (or 60s if time ran out)
+  const elapsed = 60 - timer; // seconds
+  const minutes = elapsed > 0 ? elapsed / 60 : 1/60;
+  const wpm = Math.round(correctWords / minutes);
+
+  // Show result
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = `
+    <h3>${(lang === 'hi') ? 'परीक्षण सारांश' : 'Result Summary'}</h3>
+    <p><strong>${(lang === 'hi') ? 'कुल शब्द टाइप किए:' : 'Total Words Typed:'}</strong> ${totalWords}</p>
+    <p><strong>${(lang === 'hi') ? 'सही शब्द:' : 'Correct Words:'}</strong> ${correctWords}</p>
+    <p><strong>${(lang === 'hi') ? 'गलत शब्द:' : 'Wrong Words:'}</strong> ${wrongWords}</p>
+    <p><strong>${(lang === 'hi') ? 'बैकस्पेस की संख्या:' : 'Backspaces Used:'}</strong> ${backspaceCount}</p>
+    <p><strong>${(lang === 'hi') ? 'सटीकता:' : 'Accuracy:'}</strong> ${accuracy}%</p>
+    <p><strong>WPM:</strong> ${wpm}</p>
+    <p style="margin-top:8px;color:var(--muted);font-size:13px">${(lang === 'hi') ? 'ध्यान दें:' : 'Note:'} ${ (lang==='hi')? 'परिणाम केवल "Show Result" पर क्लिक करने पर दिखते हैं।' : 'Results are shown only when you click "Show Result".'}</p>
+  `;
+}
+
+/* ---------- Utility: escape HTML ---------- */
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, function(m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]); });
+}
+
+/* ---------- Initialize on load ---------- */
+window.addEventListener('load', () => {
+  // ensure Hindi font loads and page uses UTF-8
+  languageEl.value = 'en';
+  lang = 'en';
+  loadNewParagraph();
+});
 </script>
-
-
 </body>
 </html>
-
